@@ -1,0 +1,15 @@
+/* app css stylesheet */
+
+body{
+  background-color: #333333;
+  font-size: 1em;
+}
+h1{
+  color: #ff9900;
+}
+p{
+  color:#ffffff;
+}
+.outer-container{
+  text-align: center;
+}

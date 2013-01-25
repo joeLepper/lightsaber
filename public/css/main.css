@@ -37,3 +37,7 @@ p{
   color: #fff;
   margin: 0 auto 200px;
 }
+.target.activated {
+  background: #e6e6e6;
+  color: #000;
+}

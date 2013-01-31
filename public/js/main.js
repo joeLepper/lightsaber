@@ -1,7 +1,11 @@
 //javascript goes here
 $(document).ready(function(){
-  $('#trigger-1').superScroller([ { triggerWindow : 175
-                            , target          : "#target-1"
+  $('#trigger-6').superScroller([ { triggerWindow : 400
+                            , target          : "#target-7"
                             , klass           : "activated" }
-                          ])
+                          ]);
+                          
+  $('#target-6').alternateScroller([ { effect           : "slideRight" }
+                          ]);
+                          
 });

@@ -1,8 +1,11 @@
 /* app css stylesheet */
-
+html{
+  overflow-x: hidden;
+}
 body{
   background-color: #333333;
   font-size: 1em;
+  overflow-x: hidden;
 }
 h1{
   color: #ff9900;
@@ -36,7 +39,8 @@ p{
   padding: 20px 0;
   color: #fff;
   margin: 0 auto 200px;
-  -webkit-transition: background 2s, -webkit-transform 2s;
+  // -webkit-transition: all 0.1s, -webkit-transform 0.1s;
+  position: relative;
 }
 .target.activated {
   background: #e6e6e6;

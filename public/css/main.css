@@ -36,8 +36,10 @@ p{
   padding: 20px 0;
   color: #fff;
   margin: 0 auto 200px;
+  -webkit-transition: background 2s, -webkit-transform 2s;
 }
 .target.activated {
   background: #e6e6e6;
   color: #000;
+  -webkit-transform: rotate(30deg);
 }

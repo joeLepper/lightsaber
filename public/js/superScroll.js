@@ -34,38 +34,42 @@
 
 (function($){
 	jQuery.fn.alternateScroller = function(options){
-		self = this
-		$(window).scroll(function(){
-			for (var i = 0; i < options.length; i++){
-        
-        // setting the trigger "window" to the top 
-        // of the trigger element + duration
-        var end         = self.offset().top - $(window).height()/2
-          , start       = end - $(window).height()/2
-          , inWindow    = ($(window).scrollTop() > start) && ($(window).scrollTop() < end)
-          , aboveWindow = ($(window).scrollTop() < start)
-          , belowWindow = ($(window).scrollTop() > end);
-        
-        // Which effect are we doing?
-        switch(options[i].effect){
-          case "slideRight":
-            if(inWindow){
-              var position  = 100 -(($(window).scrollTop() - start)/((end - start)/100));
-              console.log("position: " + position);
-              $(self).css("right", "-" + position + "%");
-    				} 
-    			  else if(aboveWindow){
-              $(self).css("right", "-100%");
-    				}
-    				else if(belowWindow){
-    				  $(self).css("right", "0%");
-    				};
-            break;
-          default:
-            console.log("nothing to do!");
+    console.log(this);
+    self = this;
+    $(window).scroll(function(){
+      for (var j = 0; j < self.length; j++){
+        var $self = $(self[j]);
+        for (var i = 0; i < options.length; i++){
+          
+          // setting the trigger "window" to the top 
+          // of the trigger element + duration
+          var end         = $self.offset().top - $(window).height()/2
+            , start       = end - $(window).height()/2
+            , inWindow    = ($(window).scrollTop() > start) && ($(window).scrollTop() < end)
+            , aboveWindow = ($(window).scrollTop() < start)
+            , belowWindow = ($(window).scrollTop() > end);
+          
+          // Which effect are we doing?
+          switch(options[i].effect){
+            case "slideRight":
+              if(inWindow){
+                var position  = 100 -(($(window).scrollTop() - start)/((end - start)/100));
+                console.log("position: " + position);
+                $self.css("right", "-" + position + "%");
+              } 
+              else if(aboveWindow){
+                $self.css("right", "-100%");
+              }
+              else if(belowWindow){
+                $self.css("right", "0%");
+              };
+              break;
+            default:
+              console.log("nothing to do!");
+          };
         };
-			};
-		});
+      }
+    });
 	};
 })(jQuery);
 

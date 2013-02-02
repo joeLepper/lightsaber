@@ -1,69 +1,70 @@
 (function($){
- jQuery.fn.superScroller = function(options){
-   self = this
-   console.log($(options[0].target).offset());
-   $(window).scroll(function(){
-     for (var i = 0; i < options.length; i++){
-        
-        // setting the trigger "window" to the top 
-        // of the trigger element + duration
-        var trigger     = self
-          , start       = trigger.offset().top - $(window).height()/2
-          , end         = start + options[i].triggerWindow
-          , target      = options[i].target
-          , klass       = options[i].klass
-          , inWindow    = ($(window).scrollTop() > start) && ($(window).scrollTop() < end)
-          , aboveWindow = ($(window).scrollTop() < start)
-          , belowWindow = ($(window).scrollTop() > end);
-
-        if(inWindow){
-          var position  = 100 -(($(window).scrollTop() - start)/(options[i].triggerWindow/100));
-          $(target).css("right", "-" + position + "%");
-       } 
-       else if(aboveWindow){
-          $(target).css("right", "-100%");
-       }
-       else if(belowWindow){
-         $(target).css("right", "0%");
-       };
-     };
-   });
- };
-})(jQuery);
-
-
-(function($){
 	jQuery.fn.alternateScroller = function(options){
     console.log(this);
-    self = this;
+    var self = this;
     $(window).scroll(function(){
       for (var j = 0; j < self.length; j++){
-        var $self = $(self[j]);
+
+        var $self       = $(self[j])
+          , end         = $self.offset().top - $(window).height()/2;
+
         for (var i = 0; i < options.length; i++){
-          
-          // setting the trigger "window" to the top 
-          // of the trigger element + duration
-          var end         = $self.offset().top - $(window).height()/2
-            , start       = end - $(window).height()/2
+          if (options[i].trigger){                          // check if there's a trigger
+            if (typeof options[i].trigger === "number"){
+              console.log("number");
+              end = options[i].trigger;
+            }
+            if (typeof options[i].trigger === "string"){
+              var trigString = options[i].trigger;
+              console.log("string");
+              if(trigString[trigString.length - 1] === "%"){
+                end = $(document).height() * (parseInt(trigString) / 100);
+                console.log('percentage' + end);
+              } else {
+                end = $(trigString).offset().top;
+                console.log('end in selector ' + $(trigString).offset());
+              }
+            }
+          } else {
+
+          }
+
+          var start       = end - $(window).height()/2
             , inWindow    = ($(window).scrollTop() > start) && ($(window).scrollTop() < end)
             , aboveWindow = ($(window).scrollTop() < start)
             , belowWindow = ($(window).scrollTop() > end);
+
           
           // Which effect are we doing?
           switch(options[i].effect){
             case "slideRight":
               if(inWindow){
-                var position  = 100 -(($(window).scrollTop() - start)/((end - start)/100));
-                console.log("position: " + position);
-                $self.css("right", "-" + position + "%");
+                var position  = 1 -(($(window).scrollTop() - start)/((end - start)));
+                console.log("position: " + window.innerWidth * position);
+                $self.css("right", "-" + window.innerWidth * position + "px");
               } 
               else if(aboveWindow){
-                $self.css("right", "-100%");
+                $self.css("right", "-" + window.innerWidth + "px");
               }
               else if(belowWindow){
-                $self.css("right", "0%");
+                $self.css("right", "0px");
               };
               break;
+
+            case "slideLeft":
+              if(inWindow){
+                var position  = 1 -(($(window).scrollTop() - start)/((end - start)));
+                console.log("position: " + window.innerWidth * position);
+                $self.css("left", "-" + window.innerWidth * position + "px");
+              } 
+              else if(aboveWindow){
+                $self.css("left", "-" + window.innerWidth + "px");
+              }
+              else if(belowWindow){
+                $self.css("left", "0px");
+              };
+              break;
+
             default:
               console.log("nothing to do!");
           };
@@ -182,4 +183,5 @@
   //   // calling the superScroller function on the array
   //   superScroller(scrollElements);
   // });
+
 

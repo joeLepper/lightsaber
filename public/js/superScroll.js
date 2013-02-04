@@ -8,6 +8,7 @@
           , end         = $self.offset().top - $(window).height()/2;
 
         for (var i = 0; i < options.length; i++){
+          // I feel like this should trigger just like for the target. Right now this is set to finish when the trigger element hits the top of the screen. Shouldn't it work like the target though and finish when the trigger hits the middle of the screen? DMC- 2/2/13
           if (options[i].trigger){                          // check if there's a trigger
             if (typeof options[i].trigger === "number"){
               end = options[i].trigger;

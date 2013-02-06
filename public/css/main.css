@@ -30,6 +30,7 @@ p{
   color: #fff;
   cursor: pointer;
   background: #666;
+  position: relative;
 }
 
 .target {

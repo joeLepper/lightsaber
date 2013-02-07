@@ -5,9 +5,9 @@
       for (var j = 0; j < self.length; j++){
 
         var $self = $(self[j])
-          , downStage   = $self.offset().top - $(window).height()/2
-          , centerStage
-          , upStage
+          , end   = $self.offset().top - $(window).height()/2
+          // , mid
+          , start
           , inWindow
           , aboveWindow
           , belowWindow
@@ -16,7 +16,9 @@
         for (var i = 0; i < options.length; i++){
 
           var onStage = function(staged){
-              var position  = 1 -(($(window).scrollTop() - centerStage)/((downStage - centerStage)));
+	         		// var position  = 1 -(($(window).scrollTop() - start)/((end - start)));
+  
+              var position  = 1 -(($(window).scrollTop() - start)/((end - start)));
 
               // So, uh, do I need to be animating?
               if (staged){
@@ -113,14 +115,14 @@
           // check if there's a trigger
           if (options[i].trigger){                          
             if (typeof options[i].trigger === "number"){
-              downStage = options[i].trigger;
+              end = options[i].trigger;
             }
             if (typeof options[i].trigger === "string"){
               var trigString = options[i].trigger;
               if(trigString[trigString.length - 1] === "%"){
-                downStage = $(document).height() * (parseInt(trigString) / 100);
+                end = $(document).height() * (parseInt(trigString) / 100);
               } else {
-                downStage = $(trigString).offset().top + ( $(window).height() / 2 );
+                end = $(trigString).offset().top + ( $(window).height() / 2 );
               }
             }
           }
@@ -149,24 +151,26 @@
            * JL - 2.6.13
            */
 
-           console.log('downstage ' + downStage);
+           // console.log('downstage ' + downStage);
 
-          centerStage = downStage - $(window).height() / 2;
+          start = end - $(window).height() / 2;
 
-          console.log('centerstage: ' + centerStage);
+          // console.log('centerstage: ' + centerStage);
 
-          upStage     = downStage - $(window).height();
-          inWindow    = ($(window).scrollTop() > centerStage) && ($(window).scrollTop() < downStage);
-          aboveWindow = ($(window).scrollTop() < centerStage);
-          belowWindow = ($(window).scrollTop() > downStage);
+          // start     = end - $(window).height();
 
-          if (inWindow){
+					// console.log('upstage: ' + upStage);
+					aboveWindow = ($(window).scrollTop() < start);  // nothing occurs here.
+          inIntro    = ($(window).scrollTop() > start) && ($(window).scrollTop() < end);
+          inOutro = ($(window).scrollTop() > end);  // this is executed for the remaining time of the scroll down, past end.
+
+          if (inIntro){
             onStage("intro");
           }
           else if (aboveWindow){
             onStage(false);
           }
-          else if (belowWindow){
+          else if (inOutro){
             onStage("outro");
           };
         };

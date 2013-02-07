@@ -1,111 +1,6 @@
 (function($){
-	jQuery.fn.superScroller = function(options){
-    var self = this;
-    $(window).scroll(function(){
-      for (var j = 0; j < self.length; j++){
-
-        var $self       = $(self[j])
-          , end         = $self.offset().top - $(window).height()/2;
-
-        for (var i = 0; i < options.length; i++){
-          // I feel like this should trigger just like for the target. 
-          // Right now this is set to finish when the trigger element hits the top of the screen. 
-          // Shouldn't it work like the target though and 
-          // finish when the trigger hits the middle of the screen? DMC- 2/2/13
-          if (options[i].trigger){                          // check if there's a trigger
-            if (typeof options[i].trigger === "number"){
-              end = options[i].trigger;
-            }
-            if (typeof options[i].trigger === "string"){
-              var trigString = options[i].trigger;
-              if(trigString[trigString.length - 1] === "%"){
-                end = $(document).height() * (parseInt(trigString) / 100);
-              } else {
-                end = $(trigString).offset().top;
-              }
-            }
-          } else {
-
-          }
-
-          var start       = end - $(window).height()/2
-            , inWindow    = ($(window).scrollTop() > start) && ($(window).scrollTop() < end)
-            , aboveWindow = ($(window).scrollTop() < start)
-            , belowWindow = ($(window).scrollTop() > end);
-
-          
-          // Which effect are we doing?
-          switch(options[i].effect){
-            case "slideRight":
-              if(inWindow){
-                var position  = 1 -(($(window).scrollTop() - start)/((end - start)));
-                $self.css("right", "-" + window.innerWidth * position + "px");
-              } 
-              else if(aboveWindow){
-                $self.css("right", "-" + window.innerWidth + "px");
-              }
-              else if(belowWindow){
-                $self.css("right", "0px");
-              };
-              break;
-
-            case "slideLeft":
-              if(inWindow){
-                var position  = 1 -(($(window).scrollTop() - start)/((end - start)));
-                $self.css("left", "-" + window.innerWidth * position + "px");
-              } 
-              else if(aboveWindow){
-                $self.css("left", "-" + window.innerWidth + "px");
-              }
-              else if(belowWindow){
-                $self.css("left", "0px");
-              };
-              break;
-              
-            // fades target in when trigger reaches top of window (no positioning)
-            case "fadeIn":
-              if(inWindow){
-                var opacity  = (($(window).scrollTop() - start)/((end - start)));
-                $self.css("opacity", opacity);
-              } 
-              else if(aboveWindow){
-                $self.css("opacity", "0.0");
-              }
-              else if(belowWindow){
-                $self.css("opacity", "1.0");
-              };
-              break;
-
-            // fades target out when trigger reaches top of window (no positioning)
-            case "fadeOut":
-              if(inWindow){
-                var opacity  = 1 - (($(window).scrollTop() - start)/((end - start)));
-                $self.css("opacity", opacity);
-              } 
-              else if(aboveWindow){
-                $self.css("opacity", "1.0");
-              }
-              else if(belowWindow){
-                $self.css("opacity", "0.0");
-              };
-              break;
-            default:
-              console.log("nothing to do!");
-          };
-        };
-      }
-    });
-	};
-})(jQuery);
-
-$(document).ready(function(){
-  $(window).scroll();
-});
-
-(function($){
   jQuery.fn.alterScroller = function(options){
     var self = this;
-    console.log(self);
     $(window).scroll(function(){
       for (var j = 0; j < self.length; j++){
 
@@ -116,65 +11,97 @@ $(document).ready(function(){
           , inWindow
           , aboveWindow
           , belowWindow
+          , currentEffect;
 
         for (var i = 0; i < options.length; i++){
 
           var onStage = function(staged){
-
-            var topVal
-              , botVal
-              , position;
+              var position  = 1 -(($(window).scrollTop() - centerStage)/((downStage - centerStage)));
 
               // So, uh, do I need to be animating?
               if (staged){
 
                 // I do. Intro time.
                 if(staged === "intro"){
-                  position  = 1 -(($(window).scrollTop() - centerStage)/((downStage - centerStage)));
-                  // $self.css("right", window.innerWidth * position + "px");
+                  // console.log("intro")
+                  currentEffect = options[i].intro;
                 }
 
                 // I do. Outro time.
                 else if(staged === "outro"){
-                  // position  = (($(window).scrollTop() - ( centerStage + $(window).height() / 2 )) / ((centerStage - upStage)));
-
-                  position  = 1 -(($(window).scrollTop() - centerStage)/((downStage - centerStage)));
-
-                  // $self.css("right", window.innerWidth * position + "px");
+                  // console.log("outro")
+                  currentEffect = options[i].outro;
                 }
               }
 
               // I don't need to animate, because we're offstage
               else{
-                $self.css("right", "-" + window.innerWidth + "px");
+                // TODO fix me
+                // $self.css("right", "0px");
+                // console.log("nothing to do!")
+                position = 1;
               }
+              // console.log(position);
               action(position);
             }
 
             , action = function(position){
-              switch(options[i].effect){
+              switch(currentEffect){
+                /* Currently our "slide" transitions use a hard-wired value of window.innerWidth
+                 * which "just works," but isn't terribly pleasing visually. I'd like to see us
+                 * come up with a way to have the animation know where the element is positioned
+                 * horizontally and react accordingly, thus as a default the element will always
+                 * start and end its slide in a corner of the browser, as opposed to some arbitrary
+                 * position dependent upon the elements horizontal positioning.
+                 *
+                 * I suppose this'll also affect the speed of the animation.
+                 * 
+                 * JL - 2.6.13
+                 */
+
                 case "slideRight":
-                  // console.log("right")
-                  $self.css("right", window.innerWidth * position + "px");
+                  // console.log("left: " + ( -1 * ( window.innerWidth * position ) ) + "px")
+                  $self.css("left",  -1 * ( window.innerWidth * position )  + "px");
                 break;
                 case "slideLeft":
-                  // console.log("left")
+                  // console.log("left: " + ( window.innerWidth * position ) + "px")
                   $self.css("left", window.innerWidth * position + "px");
                 break;
-                case "fadeIn":
-                  console.log(position);
-                  if( Math.abs(position) > 0  && Math.abs(position) < 1){
-                    $self.css("opacity", Math.abs(position));
-                  }
-                break;
+
+                // fades target out as it approaches centerStage
                 case "fadeOut":
-                  // console.log("fade");
-                  if( 1 - Math.abs(position) > 0  && 1 - Math.abs(position) < 1){
-                    $self.css("opacity", 1 - Math.abs(position));
-                  }
+                  // console.log(position);
+                  // if( Math.abs(position) > 0  && Math.abs(position) < 1){
+                    $self.css("opacity", Math.abs(position));
+                  // }
                 break;
 
+                // fades target in as it approaches centerStage
+                case "fadeIn":
+                  // console.log("fade");
+                  // if( 1 - Math.abs(position) > 0  && 1 - Math.abs(position) < 1){
+                    $self.css("opacity", 1 - Math.abs(position));
+                  // }
+                break;
 
+                // scroll backwards
+                case "reverse":
+                  console.log("reverse");
+                  console.log(position * window.innerHeight);
+                  $self.css("top", position * window.innerHeight);
+                break;
+
+                case "defaultIntro":
+                  console.log("I'm the default, bitches.");
+                  currentEffect = options[i].outro;
+                  action(0);
+                break;
+
+                case "defaultOutro":
+                  console.log("I'm the default, bitches.");
+                  currentEffect = options[i].intro;
+                  action(0);
+                break;
               };
             }
 
@@ -182,7 +109,9 @@ $(document).ready(function(){
           // Right now this is set to finish when the trigger element hits the top of the screen. 
           // Shouldn't it work like the target though and 
           // finish when the trigger hits the middle of the screen? DMC- 2/2/13
-          if (options[i].trigger){                          // check if there's a trigger
+
+          // check if there's a trigger
+          if (options[i].trigger){                          
             if (typeof options[i].trigger === "number"){
               downStage = options[i].trigger;
             }
@@ -197,9 +126,35 @@ $(document).ready(function(){
           }
           else {
             // do nothing
+
           }
 
+          if(!options[i].intro){ 
+            options[i].intro = "defaultIntro"
+          };
+          if(!options[i].outro){ 
+            options[i].outro = "defaultOutro"
+          };
+
+
+          /* Right now I'd like to start focusing on this "duration" variable
+           * Currently we have it hardwired to equal half the height of the window
+           *
+           * $(window).height() / 2;
+           *
+           * I would like to see us have it check for a "duration" argument that can
+           * be a number of pixels, or percent of the body height. In the absence of
+           * such an argument it should default to the above value.
+           *
+           * JL - 2.6.13
+           */
+
+           console.log('downstage ' + downStage);
+
           centerStage = downStage - $(window).height() / 2;
+
+          console.log('centerstage: ' + centerStage);
+
           upStage     = downStage - $(window).height();
           inWindow    = ($(window).scrollTop() > centerStage) && ($(window).scrollTop() < downStage);
           aboveWindow = ($(window).scrollTop() < centerStage);
@@ -214,71 +169,16 @@ $(document).ready(function(){
           else if (belowWindow){
             onStage("outro");
           };
-          
-        //   // Which effect are we doing?
-        //   switch(options[i].effect){
-        //     case "slideRight":
-        //       if(inWindow){
-        //         var position  = 1 -(($(window).scrollTop() - start)/((end - start)));
-        //         $self.css("right", "-" + window.innerWidth * position + "px");
-        //       } 
-        //       else if(aboveWindow){
-        //         $self.css("right", "-" + window.innerWidth + "px");
-        //       }
-        //       else if(belowWindow){
-        //         $self.css("right", "0px");
-        //       };
-        //       break;
-
-        //     case "slideLeft":
-        //       if(inWindow){
-        //         var position  = 1 -(($(window).scrollTop() - start)/((end - start)));
-        //         $self.css("left", "-" + window.innerWidth * position + "px");
-        //       } 
-        //       else if(aboveWindow){
-        //         $self.css("left", "-" + window.innerWidth + "px");
-        //       }
-        //       else if(belowWindow){
-        //         $self.css("left", "0px");
-        //       };
-        //       break;
-              
-        //     // fades target in when trigger reaches top of window (no positioning)
-        //     case "fadeIn":
-        //       if(inWindow){
-        //         var opacity  = (($(window).scrollTop() - start)/((end - start)));
-        //         $self.css("opacity", opacity);
-        //       } 
-        //       else if(aboveWindow){
-        //         $self.css("opacity", "0.0");
-        //       }
-        //       else if(belowWindow){
-        //         $self.css("opacity", "1.0");
-        //       };
-        //       break;
-              
-        //     // fades target out when trigger reaches top of window (no positioning)
-        //     case "fadeOut":
-        //       if(inWindow){
-        //         var opacity  = 1 - (($(window).scrollTop() - start)/((end - start)));
-        //         $self.css("opacity", opacity);
-        //       } 
-        //       else if(aboveWindow){
-        //         $self.css("opacity", "1.0");
-        //       }
-        //       else if(belowWindow){
-        //         $self.css("opacity", "0.0");
-        //       };
-        //       break;
-        //     default:
-        //       console.log("nothing to do!");
-        //   };
         };
       }
     });
   };
+
+  $(document).ready(function(){
+    $(window).scroll();
+  });
+
 })(jQuery);
 
-$(document).ready(function(){
-  $(window).scroll();
-});
+
+

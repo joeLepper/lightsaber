@@ -48,3 +48,6 @@ p{
   color: #000;
   -webkit-transform: rotate(30deg);
 }
+#scroll-top{
+  position: fixed;
+}

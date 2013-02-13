@@ -5,7 +5,8 @@
       for (var j = 0; j < self.length; j++){
 
         var $self = $(self[j])
-          , mid   = $self.offset().top - $(window).height()/2
+          , end   = $self.offset().top
+          , mid   = end - $(window).height()/2
           , start
           , withinIntro
           , withoutAnis
@@ -132,10 +133,10 @@
            * JL - 2.6.13
            */
 
-          start = mid - $(window).height() / 2;
-          withinIntro    = ($(window).scrollTop() > start) && ($(window).scrollTop() < mid);
-          withoutAnis = ($(window).scrollTop() < start);
-          withinOutro = ($(window).scrollTop() > mid);
+          start       = mid - $(window).height() / 2;
+          withinIntro = ($(window).scrollTop() > start) && ($(window).scrollTop() < mid);
+          withoutAnis = ($(window).scrollTop() < start) || ($(window).scrollTop() > end);
+          withinOutro = ($(window).scrollTop() > mid )  && ($(window).scrollTop() < end);
 
           if (withinIntro){
             onStage("intro");

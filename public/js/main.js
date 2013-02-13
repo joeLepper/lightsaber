@@ -1,9 +1,7 @@
 //javascript goes here
 $(document).ready(function(){
-
-  $('#target-7').superScroller([{ effect:  "slideRight" }]);
-  $('#target-10').superScroller([{ effect:  "fadeIn", trigger: "#trigger-9" }]);
-  $('#target-12').superScroller([{ effect:  "fadeOut", trigger: "#trigger-11" }]);
-
-
+  $('.target:nth-child(even)').superScroller([/*{ intro: "slideLeft", outro: "slideRight"}, */{intro: "fadeIn", outro: "fadeIn"}]);
+  $('.target:nth-child(odd)').superScroller([/*{ intro: "slideRight", outro: "slideRight"}, */{intro: "fadeIn", outro: "fadeIn"}]);
+  $('.trigger:nth-child(even)').superScroller([/*{ outro: "slideLeft", intro: "slideLeft"}, */{intro: "fadeIn", outro: "fadeIn"}]);
+  $('.trigger:nth-child(odd)').superScroller([/*{ intro: "slideRight", outro: "slideLeft"}, */{intro: "fadeIn", outro: "fadeIn"}]);
 });

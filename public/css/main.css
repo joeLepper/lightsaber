@@ -30,6 +30,7 @@ p{
   color: #fff;
   cursor: pointer;
   background: #666;
+  position: relative;
 }
 
 .target {
@@ -46,4 +47,7 @@ p{
   background: #e6e6e6;
   color: #000;
   -webkit-transform: rotate(30deg);
+}
+#scroll-top{
+  position: fixed;
 }

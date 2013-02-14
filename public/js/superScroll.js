@@ -3,10 +3,11 @@
     var self = this;
     $(window).scroll(function(){
       for (var j = 0; j < self.length; j++){
-
+          
         var $self = $(self[j])
+          , duration = $(window).height()/2
           , end   = $self.offset().top
-          , mid   = end - $(window).height()/2
+          , mid   = end - duration
           , start
           , withinIntro
           , withoutAnis
@@ -120,20 +121,29 @@
           if(!options[i].outro){ 
             options[i].outro = "defaultOutro"
           };
+          
+          if (options[i].duration){
+            if (typeof options[i].duration === "number"){
+              // set some value here
+              duration  = options[i].duration / 2;
+              start     = mid - duration;
+            }
+            if (typeof options[i].duration === "string"){
+              if(options[i].duration[options[i].duration.length - 1] === "%"){
+                
+                // set percentage value                
+                var percent = (parseInt(options[i].duration) / 100);
+                duration    = ($(document).height() * percent) / 2;
+                start       = mid - duration;
+              } else {
+                // Do nothing, keep defaults
+                start = mid - duration
+              }
+            }
+          }
+          
 
-          /* Right now I'd like to start focusing on this "duration" variable
-           * Currently we have it hardwired to equal half the height of the window
-           *
-           * $(window).height() / 2;
-           *
-           * I would like to see us have it check for a "duration" argument that can
-           * be a number of pixels, or percent of the body height. In the absence of
-           * such an argument it should default to the above value.
-           *
-           * JL - 2.6.13
-           */
-
-          start       = mid - $(window).height() / 2;
+          end         = mid + duration
           withinIntro = ($(window).scrollTop() > start) && ($(window).scrollTop() < mid);
           withoutAnis = ($(window).scrollTop() < start) || ($(window).scrollTop() > end);
           withinOutro = ($(window).scrollTop() > mid )  && ($(window).scrollTop() < end);

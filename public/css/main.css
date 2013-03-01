@@ -16,15 +16,15 @@ p{
 .outer-container{
   text-align: center;
 }
-#trigger-column, #target-column {
-  width: 50%;
+#trigger-column, #target-column, #foo-column, #bar-column {
+  width: 25%;
   box-sizing: border-box;
   float: left;
   padding: 1%;
 }
 .trigger {
   font-size: 20px;
-  width: 50%;
+  width: 25%;
   margin: 0 auto 200px;
   padding: 20px 0;
   color: #fff;
@@ -39,7 +39,27 @@ p{
   background: #ff0099;
   padding: 20px 0;
   color: #fff;
-  margin: 0 auto 200px;
+  margin: 0 auto 400px;
+  // -webkit-transition: all 0.1s, -webkit-transform 0.1s;
+  position: relative;
+}
+.foo{
+  font-size: 20px;
+  width: 25%;
+  background: #ff9900;
+  padding: 20px 0;
+  color: #fff;
+  margin: 0 auto 500px;
+  // -webkit-transition: all 0.1s, -webkit-transform 0.1s;
+  position: relative;
+}
+.bar{
+  font-size: 20px;
+  width: 25%;
+  background: #99ff00;
+  padding: 20px 0;
+  color: #fff;
+  margin: 0 auto 750px;
   // -webkit-transition: all 0.1s, -webkit-transform 0.1s;
   position: relative;
 }

@@ -7,68 +7,33 @@
   
 </head>
 <body>
+  <div class='page-title'><h1>Burnside's Browser Tree Map Dealie</h1></div>
 
-  <div class="outer-container">
-    <h1 id="scroll-top"></h1>
-
-    <h1>Dummmy Triggers and Targets</h1>
-    <p>(remember to use the force!)</p>
-    
-    <!-- Dummy Triggers to attach the scrollEvent to -->
-    <div id="trigger-column">
-      <div class="trigger" id="trigger-1">trigger 1</div>
-      <div class="trigger" id="trigger-2">trigger 2</div>
-      <div class="trigger" id="trigger-3">trigger 3</div>
-      <div class="trigger" id="trigger-4">trigger 4</div>
-      <div class="trigger" id="trigger-5">trigger 5</div>
-      <div class="trigger" id="trigger-6">trigger 6</div>
-      <div class="trigger" id="trigger-7">trigger 7</div>
-      <div class="trigger" id="trigger-8">trigger 8</div>
-      <div class="trigger" id="trigger-9">trigger 9</div>
-      <div class="trigger" id="trigger-10">trigger 10</div>
-      <div class="trigger" id="trigger-11">trigger 11</div>
-      <div class="trigger" id="trigger-12">trigger 12</div>
-      <div class="trigger" id="trigger-13">trigger 13</div>
-      <div class="trigger" id="trigger-14">trigger 14</div>
-      <div class="trigger" id="trigger-15">trigger 15</div>
-      <div class="trigger" id="trigger-16">trigger 16</div>
-      <div class="trigger" id="trigger-17">trigger 17</div>
-      <div class="trigger" id="trigger-18">trigger 18</div>
-      <div class="trigger" id="trigger-19">trigger 19</div>
-      <div class="trigger" id="trigger-20">trigger 20</div>
+  <div class="control-holder">
+    <p>To begin, sign in using a Google Account with access to a website's analytics</p>
+    <div class="accounts-list-container">
+      <form class="accounts-form">
+        <ul class="accounts-list"></ul>
+      </form>
     </div>
-    
-    <!-- Dummy Targets to manipulate when trigger scrollEvent is fired -->
-    <div id="target-column">
-      <div class="target" id="target-1">target 1</div>
-      <div class="target" id="target-2">target 2</div>
-      <div class="target" id="target-3">target 3</div>
-      <div class="target" id="target-4">target 4</div>
-      <div class="target" id="target-5">target 5</div>
-      <div class="target" id="target-6">target 6</div>
-      <div class="target" id="target-7">target 7</div>
-      <div class="target" id="target-8">target 8</div>
-      <div class="target" id="target-9">target 9</div>
-      <div class="target" id="target-10">target 10</div>
-      <div class="target" id="target-11">target 11</div>
-      <div class="target" id="target-12">target 12</div>
-      <div class="target" id="target-13">target 13</div>
-      <div class="target" id="target-14">target 14</div>
-      <div class="target" id="target-15">target 15</div>
-      <div class="target" id="target-16">target 16</div>
-      <div class="target" id="target-17">target 17</div>
-      <div class="target" id="target-18">target 18</div>
-      <div class="target" id="target-19">target 19</div>
-      <div class="target" id="target-20">target 20</div>
-    </div>
+    <button id="authorize-button" style="visibility: hidden">sign in </button>
+    <button id="make-api-call-button" style="visibility: hidden">Get Visits</button>
   </div>
-  <!--script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script-->
-  <script src="js/jquery_1_9.js"></script>
-  <script src="js/superScroll.js"></script>
-  <script src="js/main.js"></script>
-  <script type="text/javascript">
-    console.log($('#target-8').offset());
-    console.log(window.innerWidth);
-  </script>
+
+  <div class='map-container'>
+    <h2 class='map-title'></h2>
+    
+    <div class="legend"></div>
+    <div class="map">
+<!--       <canvas id='visualize'>Your browser doesn't support canvas, which is too bad, really.</canvas>
+ -->    </div>
+  </div>
+
+  </table>
+  <script type="text/javascript" src="js/jquery_1_9.js"></script>
+  <script type="text/javascript" src="lib/three.min.js"></script>
+  <script type="text/javascript" src="js/webgl.js"></script>
+  <script type="text/javascript" src="js/main.js"></script>
+  <script type="text/javascript" src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>
 </body>
 </html>
